@@ -1,4 +1,4 @@
-import { ContactModel } from "../models/contactModal.js"
+import { ContactModel } from "../models/contactModel.js"
 import { validationResult } from "express-validator";
 export const ContactCreate = async (req, res) => {
   const errors = validationResult(req);

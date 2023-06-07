@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { connection } from "./db/db.js";
 import cors from "cors";
 import { router as ContactRoute } from "./src/routes/contactRoutes.js";
+import { router as CareerRoute } from "./src/routes/CareerRoute.js";
 
 const app = express();
 dotenv.config();
@@ -21,10 +22,10 @@ app.use(
     origin: "*",
   })
 );
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", ContactRoute);
-// app.use("/api/v1", ContactRoute);
+app.use("/api/v1", CareerRoute);
 app.listen(process.env.PORT, async () => {
   try {
     await connection;
