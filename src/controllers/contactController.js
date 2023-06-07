@@ -1,11 +1,20 @@
-import express from "express";
-const router = express.Router();
+import { ContactModel } from "../models/contactModal.js"
+import { validationResult } from "express-validator";
+export const ContactCreate = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({
+      errors: errors.array(),
+    });
+  }
 
-import { ContactCreate, ContactDetails } from "../routes/contactRoutes.js";
-import { ContactValidation } from "../Validations/contactValidation.js";
-// import { errors } from "../ErrorHandler/errors.js";
-
-router.post("/contact", ContactValidation, ContactCreate);
-router.get("/contact", ContactDetails);
-
-export { router };
+  let payload = await ContactModel.create(req.body);
+  res.status(200).json({
+    data: payload,
+  });
+  // res.send("Data");
+};
+export const ContactDetails = async (_, res) => {
+  let data = await ContactModel.find();
+  res.send(data);
+};
