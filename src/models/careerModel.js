@@ -27,5 +27,7 @@ const CareerSchema = new mongoose.Schema({
   experience: {
     type: Number,
   },
-})
+  cv: String,
+
+});
 export const CareerModel = mongoose.model("Carrer", CareerSchema);

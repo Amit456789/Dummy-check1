@@ -1,28 +1,31 @@
 import express from "express";
-import fileUpload from "express-fileupload";
-import bodyParser from "body-parser";
+// import fileUpload from "express-fileupload";
 import dotenv from "dotenv";
 import { connection } from "./db/db.js";
 import cors from "cors";
 import { router as ContactRoute } from "./src/routes/contactRoutes.js";
 import { router as CareerRoute } from "./src/routes/CareerRoute.js";
-
-const app = express();
+import path from "path";
+import { fileURLToPath } from "url";
 dotenv.config();
+const app = express();
+const __filename = fileURLToPath(import.meta.url);
 
-// import ContactRouter from "./src/controllers/contactController.
+const __dirname = path.dirname(__filename);
 app.use(express.json());
-app.use(
-  fileUpload({
-    useTempFiles: true,
-  })
-);
+
 app.use(
   cors({
     origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
+    // credentials: true,
+    maxAge: 600,
+    exposedHeaders: ["*", "Authorization"],
   })
 );
-// app.use(bodyParser.json());
+console.log(__dirname);
+app.use("/public", express.static(`${__dirname}/uploads`)); // app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", ContactRoute);
 app.use("/api/v1", CareerRoute);
