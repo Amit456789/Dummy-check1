@@ -1,27 +1,27 @@
-// import { validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import { CareerModel } from "../models/careerModel.js";
-// import multer from "multer";
-// import { getFullUrl, multerUploadLimit } from "../utils/index.js";
-// import { catchBlockErrorHandler } from "../utils/globalErrorHandler.js";
-
 export const CareerCreate = async (req, res) => {
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   return res.status(200).json({
-  //     errors: errors.array(),
-  //   });
-  // }
-  // let payload = {...data,req.body}
-  // console.log("req.body=========================", req.body);
-  // console.log("req.files=========================", req.file);
-  let { fname } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({
+      errors: errors.array(),
+    });
+  }
+
+  let { fname, lname, city, education, email, contact, experience } = req.body;
   // fname = fname.trim();
   const uploadeObj = {
     fname,
-    cv: `http://localhost:6969/public/${req?.file?.filename}`,
+    lname,
+    city,
+    education,
+    email,
+    contact,
+    experience,
+    cv: `${process.env.URL}/public/${req?.file?.filename}`,
   };
   let payload = await CareerModel.create(uploadeObj);
-  console.log(uploadeObj);
+  // console.log(uploadeObj);
   res.status(200).json({
     data: payload,
   });
