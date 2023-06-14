@@ -9,14 +9,14 @@ export const CareerCreate = async (req, res) => {
   //   });
   // }
   const datum = JSON.parse(req.body.document);
-  let result = careerValidation(datum);
-  console.log("error", result.error);
-  if (result.error) {
-    return res.status(200).json({
-      success: false,
-      msg: result.error,
-    });
-  }
+  // let result = careerValidation(datum);
+  // console.log("error", result.error);
+  // if (result.error) {
+  //   return res.status(200).json({
+  //     success: false,
+  //     msg: result.error,
+  //   });
+  // }
   datum.cv = `${process.env.URL}/public/${req?.file?.filename}`;
 
   // let { fname, lname, city, education, email, contact, experience ,phone} = req.body;
