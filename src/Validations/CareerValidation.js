@@ -1,7 +1,7 @@
 
 import Joi from "joi";
 const schema = Joi.object({
-  email: Joi.email(),
+  email: Joi.string().email(),
   fname: Joi.string().min(2).max(40),
   lname: Joi.string().min(2).max(40),
   phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
