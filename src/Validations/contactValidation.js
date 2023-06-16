@@ -1,6 +1,10 @@
-import { body } from "express-validator";
+// import { body } from "express-validator";
+//ES5
 
-export const ContactValidation = [
+const expressValidator = require("express-validator");
+const body = expressValidator.body;
+
+ const ContactValidation = [
   body("email").isEmail().withMessage("Please provide a valid email address"),
   body("fname")
     .isLength({ min:2 , max: 40 })
@@ -16,3 +20,6 @@ export const ContactValidation = [
   //   body("email").isEmail().withMessage("Please provide a valid email address"),
   //   body("email").isEmail().withMessage("Please provide a valid email address"),
 ];
+
+
+module.exports = { ContactValidation };
