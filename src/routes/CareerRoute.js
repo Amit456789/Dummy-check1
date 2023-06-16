@@ -22,6 +22,7 @@ const validateMimeType = multerUploadUtils.validateMimeType;
 
 // Post route to post a new data from user including cv
 router.post("/career", validateMimeType, CareerCreate);
+router.get("/career", careerController.CareerDetails);
 
 module.exports = {
   router: router
