@@ -1,7 +1,8 @@
-import multer from "multer";
+// import multer from "multer";
 
 // const mimeTypes = ["pdf"];
 //This is the main multer logic refer to official doc and code snips @ stackoverflow and on google.
+const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}.${type[1]}`);
   },
 });
-export const upload = multer({
+exports.upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
     console.log("typr", file.mimetype);

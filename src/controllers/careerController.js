@@ -1,7 +1,11 @@
-import { validationResult } from "express-validator";
-import { CareerModel } from "../models/careerModel.js";
-import { careerValidation } from "../Validations/CareerValidation.js";
-export const CareerCreate = async (req, res) => {
+const validationResult = require("express-validator").validationResult;
+const careerModel = require("../models/careerModel.js").CareerModel;
+const careerValidation =
+  require("../Validations/CareerValidation.js").careerValidation;
+
+
+
+exports.CareerCreate = async (req, res) => {
   // const errors = validationResult(req);
   // if (!errors.isEmpty()) {
   //   return res.status(200).json({
@@ -9,6 +13,7 @@ export const CareerCreate = async (req, res) => {
   //   });
   // }
   const datum = JSON.parse(req.body.document);
+  console.log("This is body", datum.city);
   // let result = careerValidation(datum);
   // console.log("error", result.error);
   // if (result.error) {
@@ -38,7 +43,7 @@ export const CareerCreate = async (req, res) => {
     data: payload,
   });
 };
-export const CareerDetails = async (req, res) => {
+exports.CareerDetails = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(200).json({

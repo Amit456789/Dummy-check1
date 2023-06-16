@@ -1,6 +1,8 @@
-import express from "express";
-import mongoose from "mongoose";
+// import express from "express";
+// import mongoose from "mongoose";
 //  = customErrorMessages;
+const express = require("express");
+const mongoose = require("mongoose");
 
 const ContactShema = new mongoose.Schema({
   fname: {
@@ -10,7 +12,6 @@ const ContactShema = new mongoose.Schema({
   },
   lname: {
     type: String,
-
     trim: true,
     required: true,
   },
@@ -38,4 +39,4 @@ const ContactShema = new mongoose.Schema({
     required: true,
   },
 });
-export const ContactModel = mongoose.model("Contact", ContactShema);
+exports.ContactModel = mongoose.model("Contact", ContactShema,);

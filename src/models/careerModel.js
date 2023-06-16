@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+// const express = require("express");
+const mongoose = require("mongoose");
+
 //  = customErrorMessages;
 
 const CareerSchema = new mongoose.Schema({
@@ -28,6 +30,6 @@ const CareerSchema = new mongoose.Schema({
     type: Number,
   },
   cv: String,
-
 });
-export const CareerModel = mongoose.model("Carrer", CareerSchema);
+const CareerModel = mongoose.model("Carrer", CareerSchema);
+module.exports = { CareerModel };
