@@ -1,5 +1,5 @@
 const validationResult = require("express-validator").validationResult;
-const careerModel = require("../models/careerModel.js").CareerModel;
+const CareerModel = require("../models/careerModel.js").CareerModel;
 const careerValidation =
   require("../Validations/CareerValidation.js").careerValidation;
 
@@ -38,7 +38,7 @@ exports.CareerCreate = async (req, res) => {
   //   cv: `${process.env.URL}/public/${req?.file?.filename}`,
   // };
   let payload = await CareerModel.create(datum);
-  // console.log(uploadeObj);
+  console.log("uploadeObj",payload);
   res.status(200).json({
     data: payload,
   });
