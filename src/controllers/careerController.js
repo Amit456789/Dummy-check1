@@ -5,7 +5,6 @@ const careerValidation =
 
 exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
-  console.log("This is body", datum.city);
   let result = careerValidation(datum);
   if (result.error) {
     return res.status(200).json({
@@ -17,7 +16,7 @@ exports.CareerCreate = async (req, res) => {
 
   try {
     let payload = await CareerModel.create(datum);
-    console.log("uploadeObj", payload);
+
     res.status(200).json({
       data: payload,
     });
@@ -35,9 +34,7 @@ exports.CareerDetails = async (req, res) => {
       errors: errors.array(),
     });
   }
-  // let payload = {...data,req.body}
-  // console.log("req.body=========================", req.body);
-  // console.log("req.files=========================", req.files);
+
   let payload = await CareerModel.find();
   try {
     res.status(200).json({
