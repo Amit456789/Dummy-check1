@@ -1,5 +1,8 @@
 
-import Joi from "joi";
+// import Joi from "joi";
+//ES5
+const Joi = require("joi");
+
 const schema = Joi.object({
   email: Joi.string().email(),
   fname: Joi.string().min(2).max(40),
@@ -7,7 +10,7 @@ const schema = Joi.object({
   phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
   city:Joi.string().empty()
 });
-export const careerValidation = (data) => {
+exports.careerValidation = (data) => {
   console.log("Data", data);
   const result = schema.validate(data);
   return result;
