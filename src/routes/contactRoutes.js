@@ -16,7 +16,6 @@ const ContactCreate = contactController.ContactCreate;
 const ContactDetails = contactController.ContactDetails;
 const ContactValidation = contactValidation.ContactValidation;
 
-// Rest of your code...
 
 router.post("/contact", ContactValidation, ContactCreate);
 router.get("/contact", ContactDetails);
