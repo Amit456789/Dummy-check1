@@ -16,7 +16,9 @@ exports.CareerCreate = async (req, res) => {
 
   try {
     let payload = await CareerModel.create(datum);
+
 console.log("Pyload",payload)
+
     res.status(200).json({
       data: payload,
     });
