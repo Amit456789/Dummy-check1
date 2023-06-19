@@ -9,11 +9,14 @@ const storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    const mimeType = file.mimetype;
-    const type = mimeType.split("/");
+    const mimeType = file?.mimetype;
+    const type = mimeType?.length > 0 && mimeType?.split("/");
 
     // cb(null, `${Date.now()}${file.originalname}`);
-    cb(null, `${Date.now()}.${type[1]}`);
+    cb(
+      null,
+      Array.isArray(type) && type?.length > 0 && ` ${Date.now()}.${type[1]}`
+    );
   },
 });
 exports.upload = multer({
