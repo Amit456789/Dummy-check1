@@ -5,18 +5,18 @@ const careerValidation =
 
 exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
-  let result = careerValidation(datum);
-  if (result.error) {
-    return res.status(200).json({
-      success: false,
-      msg: result.error,
-    });
-  }
-  datum.cv = `${process.env.URL}/public/${req?.file?.filename}`;
+//   let result = careerValidation(datum);
+//   if (result.error) {
+//     return res.status(200).json({
+//       success: false,
+//       msg: result.error,
+//     });
+//   }
+  datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
 
   try {
     let payload = await CareerModel.create(datum);
-
+console.log("Pyload",payload)
     res.status(200).json({
       data: payload,
     });
