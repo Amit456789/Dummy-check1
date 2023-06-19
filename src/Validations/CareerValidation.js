@@ -9,6 +9,7 @@ const schema = Joi.object({
   lname: Joi.string().min(2).max(40),
   contact: Joi.number().integer().min(1000000000).max(9999999999).required(),
   city: Joi.string(),
+  education: Joi.string(),
   experience: Joi.number().integer(),
 });
 exports.careerValidation = (data) => {
