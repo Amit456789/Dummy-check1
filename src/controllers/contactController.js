@@ -11,12 +11,12 @@ const validationResult = require("express-validator").validationResult;
 exports.ContactCreate = async (req, res) => {
   console.log("inside the contact route");
   console.log("inside the contact", req.body);
-  // const errors = validationResult(req.body);
-  // if (!errors.isEmpty()) {
-  //   return res.status(200).json({
-  //     errors: errors.array(),
-  //   });
-  // }
+  const errors = validationResult(req.body);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({
+      errors: errors.array(),
+    });
+  }
   try {
     let payload = new ContactModel(req.body);
     await payload.save();
