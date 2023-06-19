@@ -17,7 +17,7 @@ const ContactDetails = contactController.ContactDetails;
 const ContactValidation = contactValidation.ContactValidation;
 
 
-router.post("/contact", ContactValidation, ContactCreate);
+router.post("/contact", ContactCreate);
 router.get("/contact", ContactDetails);
 
 module.exports = { router };
