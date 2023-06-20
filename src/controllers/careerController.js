@@ -23,9 +23,14 @@ exports.CareerCreate = async (req, res) => {
        });
   }
 
+
+  datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
+
   try {
     let payload = await CareerModel.create(datum);
-    console.log(payload, "Payload");
+
+console.log("Pyload",payload)
+
     res.status(200).json({
       data: payload,
     });
