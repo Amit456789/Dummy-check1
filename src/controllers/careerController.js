@@ -5,13 +5,25 @@ const careerValidation =
 
 exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
-//   let result = careerValidation(datum);
-//   if (result.error) {
-//     return res.status(200).json({
-//       success: false,
-//       msg: result.error,
-//     });
-//   }
+  let result = careerValidation(datum);
+  if (result.error) {
+    console.log(result.error.details)
+    return res.status(400).json({
+      success: false,
+      msg: result.error,
+    });
+  }
+  console.log(req?.file, "Filessssss")
+  if (req?.file) {
+    datum.cv = `${process.env.URL}/public/${req?.file?.filename}`;
+  } else {
+       return res.status(400).json({
+         success: false,
+         Error: `Please upload a pdf`,
+       });
+  }
+
+
   datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
 
   try {
