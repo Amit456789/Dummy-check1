@@ -5,7 +5,7 @@ const Joi = require("joi");
 
 const schema = Joi.object({
   email: Joi.string().email().message({
-  "string.email":"Email ID is not valid."
+    "string.email": "Email ID is not valid.",
   }),
   fname: Joi.string().min(2).max(40),
   lname: Joi.string().min(2).max(40),
@@ -21,6 +21,7 @@ const schema = Joi.object({
   city: Joi.string(),
   education: Joi.string(),
   experience: Joi.number().integer(),
+  cv: Joi.any(),
 });
 exports.careerValidation = (data) => {
   console.log("Data", data);
