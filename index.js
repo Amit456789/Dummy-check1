@@ -3,8 +3,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const db = require("./db/db.js");
 const cors = require("cors");
-const ContactRoute = require("./src/routes/contactRoutes.js").router;
-const CareerRoute = require("./src/routes/CareerRoute.js").router;
+
 const path = require("path");
 const url = require("url");
 const fileURLToPath = url.fileURLToPath;
@@ -12,6 +11,8 @@ const fileURLToPath = url.fileURLToPath;
 
 dotenv.config();
 const app = express();
+// app.use(express.json())
+app.use(express.json())
 // const __filename = fileURLToPath(import.meta.url);
 
 // const currentFilename = require.resolve(fileURLToPath(__filename));
@@ -29,12 +30,22 @@ app.use(
     exposedHeaders: ["*", "Authorization"],
   })
 );
-console.log(__dirname);
-app.use("/public", express.static(path.join(__dirname,"/uploads"))); // app.use(bodyParser.json());
+
+
+
+// routes section
+const ContactRoute = require("./src/routes/contactRoutes.js").router;
+const CareerRoute = require("./src/routes/CareerRoute.js").router;
+const ProjectRoutes = require("./src/routes/projectsRoutes.js").router
+
+
+
+app.use("/public", express.static(path.join(__dirname, "/uploads"))); // app.use(bodyParser.json());
 // app.use("/public", express.static(`${__dirnamedirname}/uploads`)); // app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", ContactRoute);
 app.use("/api/v1", CareerRoute);
+app.use("/api/v1", ProjectRoutes)
 app.listen(process.env.PORT, async () => {
   try {
     await db.connection

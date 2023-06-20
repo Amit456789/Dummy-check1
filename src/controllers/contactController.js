@@ -15,18 +15,11 @@ exports.ContactCreate = async (req, res) => {
       errors: errors.array(),
     });
   }
-  console.log("This is ciontxcat", req.body);
-  try {
-    let payload = await ContactModel.create(req.body);
-    res.status(200).json({
-      data: payload,
-    });
-  } catch (error) {
-    res.status(200).json({
-      status: false,
-      Error: error.message,
-    });
-  }
+  console.log("This is ciontxcat", req.body)
+  let payload = await ContactModel.create(req.body);
+  res.status(200).json({
+    data: payload,
+  });
   // res.send("Data");
 };
 exports.ContactDetails = async (_, res) => {
