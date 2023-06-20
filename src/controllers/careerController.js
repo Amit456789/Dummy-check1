@@ -7,10 +7,13 @@ exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
   let result = careerValidation(datum);
   if (result.error) {
-    console.log(result.error.details)
+    console.log(
+      result.error.details[0].message,
+      "Error++++++++++++++++++++++++"
+    );
     return res.status(400).json({
       success: false,
-      msg: result.error,
+      Error: result.error.details[0].message,
     });
   }
   console.log(req?.file, "Filessssss")
