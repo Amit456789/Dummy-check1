@@ -1,3 +1,5 @@
+const { sendEmail } = require("../email");
+
 const validationResult = require("express-validator").validationResult;
 const CareerModel = require("../models/careerModel.js").CareerModel;
 const careerValidation =
@@ -5,6 +7,7 @@ const careerValidation =
 
 exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
+  // console.log("Datummmm", datum);
   let result = careerValidation(datum);
   if (result.error) {
     console.log(
@@ -16,24 +19,38 @@ exports.CareerCreate = async (req, res) => {
       Error: result.error.details[0].message,
     });
   }
-  console.log(req?.file, "Filessssss")
+  // console.log(req?.file, "Filessssss");
   if (req?.file) {
     datum.cv = `${process.env.URL}/public/${req?.file?.filename}`;
   } else {
-       return res.status(400).json({
-         success: false,
-         Error: `Please upload a pdf`,
-       });
+    return res.status(400).json({
+      success: false,
+      Error: `Please upload a pdf`,
+    });
   }
-
 
   datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
 
   try {
     let payload = await CareerModel.create(datum);
-
-console.log("Pyload",payload)
-
+    const { fname, lname, contact, city, experience, email, education,cv } = datum;
+    const obj = {
+      name: fname + " " + lname,
+      contact,
+      city,
+      experience: `${experience}, Years`,
+      email,
+      education,
+cv
+    };
+    //This route is to send the mail to a user
+    sendEmail(
+      "a0423355@gmail.com",
+      "Welcome message",
+      "Welcome message content",
+      obj
+    )
+    // console.log("Payload", payload);
     res.status(200).json({
       data: payload,
     });
