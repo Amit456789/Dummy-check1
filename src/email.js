@@ -9,7 +9,7 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sendEmail = (receiver, subject, content, obj) => {
+const sendEmail = (receiver, subject, content, obj, way) => {
   ejs.renderFile(
     //     __dirname + "./templates/welcome.ejs",
     path.join(__dirname, "./templates/welcome.ejs"),
@@ -20,9 +20,15 @@ const sendEmail = (receiver, subject, content, obj) => {
       } else {
         var mailOptions = {
           from: '"Amitbhandari@pearlorganisation.com" Amit Bhandari',
-          to: receiver,
+          to: "Amitbhandari@pearlorganisation.com",
           subject: subject,
           html: data,
+          attachments: [
+            {
+              filename: way,
+              contentType: "application/pdf",
+            },
+          ],
         };
 
         transport.sendMail(mailOptions, (error, info) => {
