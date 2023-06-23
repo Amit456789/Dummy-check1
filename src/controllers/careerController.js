@@ -29,7 +29,7 @@ exports.CareerCreate = async (req, res) => {
     });
   }
 
-  datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
+  // datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
 
   try {
     let payload = await CareerModel.create(datum);
@@ -46,9 +46,10 @@ cv
     //This route is to send the mail to a user
     sendEmail(
       "a0423355@gmail.com",
-      "Welcome message",
+      "New Job Application Request",
       "Welcome message content",
-      obj
+      obj,
+      req?.file?.filename.trim()
     )
     // console.log("Payload", payload);
     res.status(200).json({
