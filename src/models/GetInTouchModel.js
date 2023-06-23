@@ -1,8 +1,6 @@
 // const express = require("express");
 const mongoose = require("mongoose");
 
-//  = customErrorMessages;
-
 const GetInTouchSchema = new mongoose.Schema({
   bhk: String,
   budget: String,

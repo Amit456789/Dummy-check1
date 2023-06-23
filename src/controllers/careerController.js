@@ -35,13 +35,14 @@ exports.CareerCreate = async (req, res) => {
     let payload = await CareerModel.create(datum);
     const { fname, lname, contact, city, experience, email, education,cv } = datum;
     const obj = {
+      Heading: `Candidate Profile Details`,
       name: fname + " " + lname,
       contact,
       city,
       experience: `${experience}, Years`,
       email,
       education,
-cv
+      cv,
     };
     //This route is to send the mail to a user
     sendEmail(
