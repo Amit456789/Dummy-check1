@@ -8,8 +8,7 @@ const schema = Joi.object({
     "string.email": "Email ID is not valid.",
   }),
   name: Joi.string().min(2).max(40),
-  category: Joi.string(),
-  subCategory: Joi.string(),
+
   contact: Joi.number()
     .integer()
     .min(10 ** 9)
@@ -23,8 +22,10 @@ const schema = Joi.object({
   budget: Joi.string(),
   area: Joi.string(),
   location: Joi.string(),
+  category: Joi.string(),
+  subCategory: Joi.string(),
 });
-exports.careerValidation = (data) => {
+exports.getInTouchValidation = (data) => {
   console.log("Data", data);
   const result = schema.validate(data);
   return result;

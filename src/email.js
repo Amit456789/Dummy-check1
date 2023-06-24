@@ -18,14 +18,14 @@ const sendEmail = (receiver, subject, content, obj, way) => {
       if (err) {
         console.log(err);
       } else {
-        var mailOptions = {
+        let mailOptions = {
           from: '"Amitbhandari@pearlorganisation.com" Amit Bhandari',
           to: "Amitbhandari@pearlorganisation.com",
           subject: subject,
           html: data,
-          attachments: [
+        attachments: [
             {
-              filename: way,
+              filename: way && way,
               contentType: "application/pdf",
             },
           ],
