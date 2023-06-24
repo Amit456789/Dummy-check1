@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
     // cb(null, `${Date.now()}${file.originalname}`);
     cb(
       null,
-      Array.isArray(type) && type?.length > 0 && `${Date.now()}.${type[1]}`
+      Array?.isArray(type) && type?.length > 0 && `${Date.now()}.${type[1]}`
     );
   },
 });

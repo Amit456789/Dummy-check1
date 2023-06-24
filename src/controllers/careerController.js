@@ -39,7 +39,7 @@ exports.CareerCreate = async (req, res) => {
       name: fname + " " + lname,
       contact,
       city,
-      experience: `${experience}, Years`,
+      experience: `${experience} Years`,
       email,
       education,
       cv,
