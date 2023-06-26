@@ -1,5 +1,5 @@
 const { sendEmail } = require("../email");
-
+const path = require("path");
 const validationResult = require("express-validator").validationResult;
 const CareerModel = require("../models/careerModel.js").CareerModel;
 const careerValidation =
@@ -45,6 +45,7 @@ exports.CareerCreate = async (req, res) => {
       education,
       cv,
     };
+    console.log("This is to check path in career", __dirname);
     //This route is to send the mail to a user
     sendEmail(
       "a0423355@gmail.com",
@@ -58,7 +59,7 @@ exports.CareerCreate = async (req, res) => {
       data: payload,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
       status: false,
       Error: error.message,
     });
@@ -67,7 +68,7 @@ exports.CareerCreate = async (req, res) => {
 exports.CareerDetails = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(200).json({
+    return res.status(400).json({
       errors: errors.array(),
     });
   }
@@ -78,7 +79,7 @@ exports.CareerDetails = async (req, res) => {
       data: payload,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
       status: false,
       Error: error.message,
     });
