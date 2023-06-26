@@ -33,7 +33,7 @@ const sendEmail = async (receiver, subject, content, obj, way) => {
           ],
         };
 
-        transport.sendMail(mailOptions, (error, info) => {
+        transport.sendMail(mailOptions, (error,info) => {
           if (error) {
             return console.log(error);
           }
