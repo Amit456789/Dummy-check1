@@ -46,7 +46,7 @@ exports.CareerCreate = async (req, res) => {
     };
     //This route is to send the mail to a user
     sendEmail(
-      "a0423355@gmail.com",
+      "shubhamsingh@pearlorganisation.com",
       "New Job Application Request",
       "Welcome message content",
       obj,
