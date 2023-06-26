@@ -14,7 +14,7 @@ const sendEmail = async (receiver, subject, content, obj, way) => {
     //     __dirname + "./templates/welcome.ejs",
     path.join(__dirname, "./templates/welcome.ejs"),
     { receiver, content, obj },
-    (err, data) => {
+    async (err, data) => {
       if (err) {
         console.log(err);
       } else {
@@ -33,7 +33,7 @@ const sendEmail = async (receiver, subject, content, obj, way) => {
           ],
         };
 
-        transport.sendMail(mailOptions, (error,info) => {
+        await transport.sendMail(mailOptions, (error, info) => {
           if (error) {
             return console.log(error);
           }

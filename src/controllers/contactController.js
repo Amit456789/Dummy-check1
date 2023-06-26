@@ -25,7 +25,7 @@ exports.ContactCreate = async (req, res) => {
       data: payload,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(401).json({
       status: false,
       Error: error.message,
     });
@@ -39,7 +39,7 @@ exports.ContactDetails = async (_, res) => {
       status: true,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
       status: false,
       Error: error.message,
     });
