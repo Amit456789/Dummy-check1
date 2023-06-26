@@ -21,7 +21,7 @@ exports.CareerCreate = async (req, res) => {
   }
   // console.log(req?.file, "Filessssss");
   if (req?.file) {
-    datum.cv = `${process.env.URL}/public/${req?.file?.filename}`;
+    datum.cv = `${process.env.URL || "http://localhost:4000"}/public/${req?.file?.filename}`;
   } else {
     return res.status(400).json({
       success: false,
