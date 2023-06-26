@@ -33,7 +33,8 @@ exports.CareerCreate = async (req, res) => {
 
   try {
     let payload = await CareerModel.create(datum);
-    const { fname, lname, contact, city, experience, email, education,cv } = datum;
+    const { fname, lname, contact, city, experience, email, education, cv } =
+      datum;
     const obj = {
       Heading: `Candidate Profile Details`,
       name: fname + " " + lname,
@@ -46,12 +47,12 @@ exports.CareerCreate = async (req, res) => {
     };
     //This route is to send the mail to a user
     sendEmail(
-      "shubhamsingh@pearlorganisation.com",
+      "a0423355@gmail.com",
       "New Job Application Request",
       "Welcome message content",
       obj,
       req?.file?.filename.trim()
-    )
+    );
     // console.log("Payload", payload);
     res.status(200).json({
       data: payload,
