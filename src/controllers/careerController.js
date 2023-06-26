@@ -7,7 +7,7 @@ const careerValidation =
 
 exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
-    const protocol = req.protocol;
+  const protocol = req.protocol;
   console.log("Protocol inside career", protocol);
   let result = careerValidation(datum);
   if (result.error) {
@@ -22,11 +22,9 @@ exports.CareerCreate = async (req, res) => {
   }
   // console.log(req?.file, "Filessssss");
   if (req?.file) {
-    datum.cv = `${
-      protocol === "http"
-        ? "http://localhost:4000"
-        : `https://klimart-backend.onrender.com`
-    }/public/${req?.file?.filename}`;
+    datum.cv = `${`https://klimart-backend.onrender.com`}/public/${
+      req?.file?.filename
+    }`;
   } else {
     return res.status(400).json({
       success: false,
