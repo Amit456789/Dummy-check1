@@ -2,23 +2,36 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const db = require("./db/db.js");
+const app = express();
 const cors = require("cors");
 
-const path = require("path");
+
 const url = require("url");
 const fileURLToPath = url.fileURLToPath;
 
 
+
+
+
+
+
+
+
+
+
+// middlewares
+
 dotenv.config();
-const app = express();
-// app.use(express.json())
+
+const { errorHandler } = require("./src/middleware/errorMiddleware.js")
+
+const path = require('path');
+
 app.use(express.json())
-// const __filename = fileURLToPath(import.meta.url);
 
-// const currentFilename = require.resolve(fileURLToPath(__filename));
-
-// const dirname = path.dirname(currentFilename);
 app.use(express.json());
+app.use("/public", express.static(path.join(__dirname, "/uploads"))); // app.use(bodyParser.json());
+app.use(errorHandler)
 
 app.use(
   cors({
@@ -33,19 +46,48 @@ app.use(
 
 
 
+
+
+
+
+
+// importing routes
+const ContactRoute = require("./src/routes/contactRoutes.js")
+const CareerRoute = require("./src/routes/CareerRoute.js")
+const ProjectRoutes = require("./src/routes/projectsRoutes.js")
+const address = require('./src/routes/headquarter.js')
+const teams = require('./src/routes/teams.js')
+const help = require('./src/routes/helpdesk.js')
+const employee = require("./src/routes/employe.js")
+
+
+
+
+
+
+
+
 // routes section
-const ContactRoute = require("./src/routes/contactRoutes.js").router;
-const CareerRoute = require("./src/routes/CareerRoute.js").router;
-const ProjectRoutes = require("./src/routes/projectsRoutes.js").router
+
+
+const versionOne = (routeName) => `/api/v1/${routeName}`
+
+app.use(versionOne('address'), address)
+app.use(versionOne('teams'), teams)
+app.use(versionOne('helpdesk'), help)
+app.use(versionOne('employee'), employee)
 
 
 
-app.use("/public", express.static(path.join(__dirname, "/uploads"))); // app.use(bodyParser.json());
-// app.use("/public", express.static(`${__dirnamedirname}/uploads`)); // app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", ContactRoute);
 app.use("/api/v1", CareerRoute);
-app.use("/api/v1", ProjectRoutes)
+app.use("/api/v1", ProjectRoutes);
+
+
+
+// db connection
+
 app.listen(process.env.PORT, async () => {
   try {
     await db.connection

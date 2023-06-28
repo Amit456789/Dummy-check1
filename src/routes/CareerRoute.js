@@ -24,6 +24,4 @@ const validateMimeType = multerUploadUtils.validateMimeType;
 router.post("/career", validateMimeType, CareerCreate);
 router.get("/career", careerController.CareerDetails);
 
-module.exports = {
-  router: router
-};
+module.exports = router
