@@ -2,8 +2,8 @@
 const mongoose = require("mongoose");
 
 const GetInTouchSchema = new mongoose.Schema({
-  bhk: String,
-  budget: String,
+  bhk: Number,
+  budget: Number,
   area: String,
   location: String,
   name: String,
