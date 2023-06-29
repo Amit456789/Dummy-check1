@@ -1,5 +1,5 @@
 const { sendEmail } = require("../email");
-
+const path = require("path");
 const validationResult = require("express-validator").validationResult;
 const CareerModel = require("../models/careerModel.js").CareerModel;
 const careerValidation =
@@ -7,7 +7,8 @@ const careerValidation =
 
 exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
-  // console.log("Datummmm", datum);
+  const protocol = req.protocol;
+  console.log("Protocol inside career", protocol);
   let result = careerValidation(datum);
   if (result.error) {
     console.log(
@@ -21,7 +22,9 @@ exports.CareerCreate = async (req, res) => {
   }
   // console.log(req?.file, "Filessssss");
   if (req?.file) {
-    datum.cv = `${process.env.URL}/public/${req?.file?.filename}`;
+    datum.cv = `${`https://klimart-backend.onrender.com`}/public/${
+      req?.file?.filename
+    }`;
   } else {
     return res.status(400).json({
       success: false,
@@ -33,7 +36,8 @@ exports.CareerCreate = async (req, res) => {
 
   try {
     let payload = await CareerModel.create(datum);
-    const { fname, lname, contact, city, experience, email, education,cv } = datum;
+    const { fname, lname, contact, city, experience, email, education, cv } =
+      datum;
     const obj = {
       Heading: `Candidate Profile Details`,
       name: fname + " " + lname,
@@ -44,20 +48,21 @@ exports.CareerCreate = async (req, res) => {
       education,
       cv,
     };
+    console.log("This is to check path in career", __dirname);
     //This route is to send the mail to a user
     sendEmail(
-      "shubhamsingh@pearlorganisation.com",
+      "a0423355@gmail.com",
       "New Job Application Request",
       "Welcome message content",
       obj,
       req?.file?.filename.trim()
-    )
+    );
     // console.log("Payload", payload);
     res.status(200).json({
       data: payload,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
       status: false,
       Error: error.message,
     });
@@ -66,7 +71,7 @@ exports.CareerCreate = async (req, res) => {
 exports.CareerDetails = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(200).json({
+    return res.status(400).json({
       errors: errors.array(),
     });
   }
@@ -77,7 +82,7 @@ exports.CareerDetails = async (req, res) => {
       data: payload,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
       status: false,
       Error: error.message,
     });
