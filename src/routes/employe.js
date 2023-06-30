@@ -7,8 +7,7 @@ const {
   deleteEmployee
 } = require('../controllers/employeesController')
 
-const Employee = require('../models/contactModel')
-
+const Employee = require('../models/emplyee')
 const router = express.Router()
 
 const advancedResults = require('../middleware/advancedResults')
