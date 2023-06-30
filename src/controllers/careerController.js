@@ -1,48 +1,71 @@
+const { sendEmail } = require("../email");
+const path = require("path");
 const validationResult = require("express-validator").validationResult;
 const CareerModel = require("../models/careerModel.js").CareerModel;
 const careerValidation =
   require("../Validations/CareerValidation.js").careerValidation;
 
 exports.CareerCreate = async (req, res) => {
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   return res.status(200).json({
-  //     errors: errors.array(),
-  //   });
-  // }
   const datum = JSON.parse(req.body.document);
-  console.log("This is body", datum.city);
+  const protocol = req.protocol;
+  console.log("Protocol inside career", protocol);
   let result = careerValidation(datum);
-  // console.log("error", result.error);
   if (result.error) {
-    return res.status(200).json({
+    console.log(
+      result.error.details[0].message,
+      "Error++++++++++++++++++++++++"
+    );
+    return res.status(400).json({
       success: false,
-      msg: result.error,
+      Error: result.error.details[0].message,
     });
   }
-  datum.cv = `${process.env.URL}/public/${req?.file?.filename}`;
+  // console.log(req?.file, "Filessssss");
+  if (req?.file) {
+    datum.cv = `${`https://klimart-backend.onrender.com`}/public/${
+      req?.file?.filename
+    }`;
+  } else {
+    return res.status(400).json({
+      success: false,
+      Error: `Please upload a pdf`,
+    });
+  }
 
-  // let { fname, lname, city, education, email, contact, experience ,phone} = req.body;
-  // // fname = fname.trim();
-  // const uploadeObj = {
-  //   fname,
-  //   lname,
-  //   city,
-  //   education,
-  //   email,
-  //   contact,
-  //   experience,
-  //   phone,
-  //   cv: `${process.env.URL}/public/${req?.file?.filename}`,
-  // };
+  // datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
+
   try {
     let payload = await CareerModel.create(datum);
-    console.log("uploadeObj", payload);
+    const { fname, lname, contact, city, experience, email, education, cv } =
+      datum;
+    const way = req.file.filename.trim();
+
+    const obj = {
+      Heading: `Candidate Profile Details`,
+      name: fname + " " + lname,
+      contact,
+      city,
+      experience: `${experience} Years`,
+      email,
+      education,
+      cv,
+      way,
+    };
+    console.log("This is to check path in career", __dirname);
+    //This route is to send the mail to a user
+    sendEmail(
+      "a0423355@gmail.com",
+      "New Job Application Request",
+      "Welcome message content",
+      obj
+    );
+    // console.log("Payload", payload);
     res.status(200).json({
+      success: true,
       data: payload,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
       status: false,
       Error: error.message,
     });
@@ -51,20 +74,18 @@ exports.CareerCreate = async (req, res) => {
 exports.CareerDetails = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(200).json({
+    return res.status(400).json({
       errors: errors.array(),
     });
   }
-  // let payload = {...data,req.body}
-  // console.log("req.body=========================", req.body);
-  // console.log("req.files=========================", req.files);
+
   let payload = await CareerModel.find();
   try {
     res.status(200).json({
       data: payload,
     });
   } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
       status: false,
       Error: error.message,
     });

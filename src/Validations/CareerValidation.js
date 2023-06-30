@@ -1,10 +1,12 @@
-
 // import Joi from "joi";
 //ES5
+//All the input fields are necessary to validate it from JOI.
 const Joi = require("joi");
 
 const schema = Joi.object({
-  email: Joi.string().email(),
+  email: Joi.string().email().message({
+    "string.email": "Email ID is not valid.",
+  }),
   fname: Joi.string().min(2).max(40),
   lname: Joi.string().min(2).max(40),
   phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
@@ -17,4 +19,3 @@ exports.careerValidation = (data) => {
 };
 
 //  default careerValidation;
-

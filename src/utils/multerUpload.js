@@ -1,6 +1,6 @@
 //This comp is to check abut the file type of a uploaded file and proceed it only if it is a pdf
 
-// import { upload } from "./multerPdfUpload.js";
+
 
 const upload = require("./multerPdfUpload.js").upload;
 
