@@ -9,7 +9,7 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (receiver, subject, content, obj, way) => {
+const sendEmail = async (receiver, subject, content, obj) => {
   ejs.renderFile(
     //     __dirname + "./templates/welcome.ejs",
     path.join(__dirname, "./templates/welcome.ejs"),
@@ -19,21 +19,25 @@ const sendEmail = async (receiver, subject, content, obj, way) => {
         console.log(err);
       } else {
         console.log("This is inside email", path.dirname(__dirname));
+        console.log("this is obj way", obj.way);
+
         let mailOptions = {
           from: '"Amitbhandari@pearlorganisation.com" Amit Bhandari',
           to: "Amitbhandari@pearlorganisation.com",
           subject: subject,
           html: data,
-          attachments: [
-            {
-              filename: way && way,
-              contentType: "application/pdf",
-              path: path.dirname(__dirname) + `/uploads/${way}`,
-            },
-          ],
         };
+        if (obj?.way) {
+          mailOptions.attachments = [
+            {
+              filename: obj?.way && obj?.way,
+              contentType: "application/pdf",
+              path: path.dirname(__dirname) + `/uploads/${obj?.way}`,
+            }
+          ];
+        }
 
-        await transport.sendMail(mailOptions, (error, info) => {
+         transport.sendMail(mailOptions, (error, info) => {
           if (error) {
             return console.log(error);
           }

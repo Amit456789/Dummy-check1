@@ -35,8 +35,7 @@ exports.CreateGetInTouch = async (req, res) => {
       "a0423355@gmail.com",
       "New Project Request",
       "Welcome message content",
-      obj,
-     
+      obj, 
     );
     let payload = new GetInTouchModel(req.body);
 
