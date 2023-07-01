@@ -22,9 +22,8 @@ exports.CareerCreate = async (req, res) => {
   }
   // console.log(req?.file, "Filessssss");
   if (req?.file) {
-    datum.cv = `${`https://klimart-backend.onrender.com`}/public/${
-      req?.file?.filename
-    }`;
+    datum.cv = `${`https://klimart-backend.onrender.com`}/public/${req?.file?.filename
+      }`;
   } else {
     return res.status(400).json({
       success: false,

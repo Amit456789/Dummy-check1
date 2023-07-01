@@ -9,11 +9,21 @@ const schema = Joi.object({
   }),
   fname: Joi.string().min(2).max(40),
   lname: Joi.string().min(2).max(40),
-  phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
-  city: Joi.string().empty()
+  contact: Joi.number()
+    .integer()
+    .min(10 ** 9)
+    .max(10 ** 10 - 1)
+    .required()
+    .messages({
+      "number.min": "Mobile number should be 10 digit.",
+      "number.max": "Mobile number should be 10 digit",
+    }),
+  city: Joi.string(),
+  education: Joi.string(),
+  experience: Joi.number().integer(),
+  cv: Joi.any(),
 });
 exports.careerValidation = (data) => {
-  console.log("Data", data);
   const result = schema.validate(data);
   return result;
 };

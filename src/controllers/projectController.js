@@ -14,7 +14,7 @@ const uploadProjects = async (req, res) => {
         const { files } = req
         const propertyGallery = []
         const pictures = files.forEach((file) => {
-            propertyGallery.push(file.path)
+            propertyGallery.push(file?.path)
         })
 
 
@@ -47,7 +47,7 @@ const uploadProjects = async (req, res) => {
 const getProject = async (req, res) => {
     const filterObject = {}
     let { type } = req.query
-    console.log(type)
+
     if (type) {
         filterObject.type = type
     }

@@ -83,7 +83,7 @@ exports.createTeam = asyncHandler(async (req, res, next) => {
 // @desc    Update Team
 // @route   PUT /api/v1/Team/:id
 exports.updateTeam = asyncHandler(async (req, res, next) => {
-  const resources = await Category.findByIdAndUpdate(req.params.id, req.body, {
+  const resources = await Category.findByIdAndUpdate(req?.params?.id, req.body, {
     runValidators: true,
     new: true
   })

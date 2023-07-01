@@ -12,7 +12,7 @@ const ContactDetails = contactController.ContactDetails;
 const ContactValidation = contactValidation.ContactValidation;
 
 
-router.post("/contact", ContactValidation, ContactCreate);
-router.get("/contact", ContactDetails);
+router.post("/", ContactValidation, ContactCreate);
+router.get("/", ContactDetails);
 
 module.exports = router
