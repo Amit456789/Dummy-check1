@@ -1,9 +1,4 @@
-// import express from "express";
-// const router = express.Router();
 
-// import { ContactCreate, ContactDetails } from "../controllers/contactController.js"
-// import { ContactValidation } from "../Validations/contactValidation.js";
-// // import { errors } from "../ErrorHandler/errors.js";
 
 //ES5 Chsanges
 const express = require("express");
@@ -17,7 +12,7 @@ const ContactDetails = contactController.ContactDetails;
 const ContactValidation = contactValidation.ContactValidation;
 
 
-router.post("/contact", ContactValidation, ContactCreate);
-router.get("/contact", ContactDetails);
+router.post("/", ContactValidation, ContactCreate);
+router.get("/", ContactDetails);
 
-module.exports = { router };
+module.exports = router

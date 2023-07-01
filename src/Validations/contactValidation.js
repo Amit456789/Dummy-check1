@@ -1,13 +1,10 @@
-// import { body } from "express-validator";
-//ES5
-
 const expressValidator = require("express-validator");
 const body = expressValidator.body;
 
- const ContactValidation = [
+const ContactValidation = [
   body("email").isEmail().withMessage("Please provide a valid email address"),
   body("fname")
-    .isLength({ min:2 , max: 40 })
+    .isLength({ min: 2, max: 40 })
     .withMessage("fname must be between 2 and 40 characters long"),
   body("lname")
     .isLength({ min: 2, max: 40 })

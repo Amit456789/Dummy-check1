@@ -24,7 +24,6 @@ const schema = Joi.object({
   cv: Joi.any(),
 });
 exports.careerValidation = (data) => {
-  console.log("Data", data);
   const result = schema.validate(data);
   return result;
 };
