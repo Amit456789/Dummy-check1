@@ -11,7 +11,7 @@ const validationResult = require("express-validator").validationResult;
 exports.ContactCreate = async (req, res) => {
   const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
-    return res.status(200).json({
+    return res.status(400).json({
       errors: errors.array(),
     });
   }

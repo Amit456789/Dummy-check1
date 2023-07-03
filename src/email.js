@@ -33,11 +33,11 @@ const sendEmail = async (receiver, subject, content, obj) => {
               filename: obj?.way && obj?.way,
               contentType: "application/pdf",
               path: path.dirname(__dirname) + `/uploads/${obj?.way}`,
-            }
+            },
           ];
         }
 
-         transport.sendMail(mailOptions, (error, info) => {
+        transport.sendMail(mailOptions, (error, info) => {
           if (error) {
             return console.log(error);
           }
