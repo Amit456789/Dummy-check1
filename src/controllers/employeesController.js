@@ -1,8 +1,9 @@
 const path = require('path')
 const fs = require('fs')
 const asyncHandler = require('../middleware/async')
-const ErrorResponse = require('../utils/errorResponse')
+// const ErrorResponse = require('../utils/errorResponse')
 const Category = require('../models/emplyee')
+const ErrorResponse = require('../utils/errorResponse')
 
 // @desc    Get employees
 // @route   GET /api/v1/employees
@@ -13,11 +14,11 @@ exports.getEmployees = asyncHandler(async (req, res, next) => {
 // @desc    Get single employees
 // @route   GET /api/v1/employees/:id
 exports.getEmployee = asyncHandler(async (req, res, next) => {
-  const category = await Category.findById(req.params.id)
+  const category = await Category.findById(req?.params.id)
 
   if (!category) {
     return next(
-      new ErrorResponse(`No category with that id of ${req.params.id}`)
+      new ErrorResponse(`No category with that id of ${req?.params.id}`)
     )
   }
 
