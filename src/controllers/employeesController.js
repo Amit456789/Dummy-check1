@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const asyncHandler = require('../middleware/async')
 const Category = require('../models/emplyee')
-const ErrorResponse = require('../utils/errorResponse')
+
 
 // @desc    Get employees
 // @route   GET /api/v1/employees

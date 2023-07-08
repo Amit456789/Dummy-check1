@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('./async')
-const ErrorResponse = require('../utils/errorResponse')
+
 const User = require('../models/User')
 
 exports.protect = asyncHandler(async (req, res, next) => {
   let token
-const {cookie}=req.header
-console.log(cookie,"vfhfguj")
+  const { cookie } = req.header
+  console.log(cookie, "vfhfguj")
   console.log(req.cookies.token)
   // for Headers(authorization)
 
@@ -24,9 +24,9 @@ console.log(cookie,"vfhfguj")
     token = req?.cookies?.token
 
   }
-
+  res.status(400).json({ status: "FAILURE", msg: "Internal server error" })
   if (!token) {
-    return next(new ErrorResponse('Not authorized to access this routea', 401))
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error" })
   }
 
   try {
@@ -34,10 +34,10 @@ console.log(cookie,"vfhfguj")
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     console.log(decoded, "kjkj")
     req.user = await User.findById(decoded.id)
-    
+
     next()
   } catch (err) {
-    return next(new ErrorResponse('Not authorized to access this routeb', 401))
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error" })
   }
 })
 
@@ -45,12 +45,7 @@ console.log(cookie,"vfhfguj")
 exports.authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorResponse(
-          `User role ${req.user.role} is not authorized to access this routec`,
-          403
-        )
-      )
+      return res.status(400).json({ status: "FAILURE", msg: "Internal server error" })
     }
     next()
   }
