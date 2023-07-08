@@ -44,4 +44,3 @@ exports.ContactDetails = async (_, res) => {
     });
   }
 };
-

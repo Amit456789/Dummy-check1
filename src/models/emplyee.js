@@ -16,10 +16,10 @@ const EmployeSchema = new Schema(
       required: [true, 'EmployeeId is required']
     },
     Address: {
-        type: String,
-        minlength: [3, 'Address must be three characters long'],
-        required: [true, 'Address is required']
-      },
+      type: String,
+      minlength: [3, 'Address must be three characters long'],
+      required: [true, 'Address is required']
+    },
     photo: {
       type: [String],
       required: [true, "property photos is required"]
