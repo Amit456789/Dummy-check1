@@ -64,16 +64,17 @@ const getBlogs = async (req, res) => {
 // @route   PUT /api/v1/updateBlogs/:id
 const updateBlogs = async (req, res) => {
     const address = await project.findByIdAndUpdate(req.params.id, req.body, {
-      runValidators: true,
-      new: true
+        runValidators: true,
+        new: true
     })
-  
+
     if (!address) {
-      return next(new ErrorResponse(`No Blog with id of ${req.params.id}`))
+        return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
     }
-  
+
     res.status(200).json({ success: true, data: address })
-  }
+}
 
 
 const updateProject = async (req, res) => {
@@ -85,7 +86,7 @@ const updateProject = async (req, res) => {
         const pictures = files.forEach((file) => {
             propertyGallery.push(file?.path)
         })
-        
+
         const Location = JSON.parse(req?.body?.location)
         const payload = {
             buildUpArea: req?.body?.buildUpArea,
@@ -129,5 +130,5 @@ const deleteBlogs = async (req, res) => {
 
 }
 
-module.exports = { uploadBlogs , getBlogs, deleteBlogs , updateBlogs  }
+module.exports = { uploadBlogs, getBlogs, deleteBlogs, updateBlogs }
 

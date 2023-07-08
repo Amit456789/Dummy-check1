@@ -68,6 +68,9 @@ const getProject = async (req, res) => {
 // @route   PUT /api/v1/address/:id
 const updateProjectMegha = async (req, res) => {
 
+    if (!req?.body?.location) {
+        return res.status(400).json({ status: "FAILURE", msg: "Location field is required" })
+    }
     const Location = JSON.parse(req?.body?.location)
     const payload = {
         buildUpArea: req?.body?.buildUpArea,

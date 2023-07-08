@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("../middleware/async");
-const ErrorResponse = require("../utils/errorResponse");
+
 const sendEmail = require("../utils/sendEmail");
 const otpGenerator = require("../utils/otpGenerator");
 
@@ -21,15 +21,15 @@ const otpModel = require("../models/OtpModel");
 // })
 
 //getUser by search query
-exports.getUsersByName = async(req,res)=>{
+exports.getUsersByName = async (req, res) => {
   try {
     const keyword = req.query.search ? {
       $or: [
-        {name: {$regex: req.query.search, $options: 'i'}},
-        {email: {$regex: req.query.search, $options:'i'}}
+        { name: { $regex: req.query.search, $options: 'i' } },
+        { email: { $regex: req.query.search, $options: 'i' } }
       ]
     } : {}
-    const users = await User.find(keyword).find({ _id: {$ne: req.user.id}})
+    const users = await User.find(keyword).find({ _id: { $ne: req.user.id } })
     message = {
       success: true,
       data: users,
@@ -47,9 +47,9 @@ exports.getUsersByName = async(req,res)=>{
   }
 }
 //getAllUsers except loggedIn user
-exports.getUsers = async(req,res,next)=>{
+exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find({ _id: {$ne: req.user.id}}).select('_id username email pic')
+    const users = await User.find({ _id: { $ne: req.user.id } }).select('_id username email pic')
     message = {
       success: true,
       data: users,
@@ -74,9 +74,11 @@ exports.register = asyncHandler(async (req, res, next) => {
   const { name, username, email, password, role } = req.body;
 
   let user = await User.findOne({ email });
-  if (user) return next(new ErrorResponse("Email already exists", 401));
+  if (user) return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   user = await User.findOne({ username });
-  if (user) return next(new ErrorResponse("Username already exists", 401));
+  if (user) return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+    ;
 
   user = await User.create({
     name,
@@ -112,7 +114,8 @@ exports.login = asyncHandler(async (req, res, next) => {
   const isMatch = await user.matchPassword(password);
 
   if (!isMatch) {
-    return next(new ErrorResponse("Invalid credentials", 400));
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
 
   sendTokenResponse(user, 200, res)
@@ -139,7 +142,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/auth/updatedetails
 // @access  Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-    console.log("update details");
+  console.log("update details");
   const fields = {
     username: req.body.username,
     email: req.body.email,
@@ -151,7 +154,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 
   user = await User.findOne({ username: fields.username });
   if (user && user.username !== req.user.username)
-    return next(new ErrorResponse("Username already exists", 401));
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
 
   user = await User.findByIdAndUpdate(req.user.id, fields, {
     new: true,
@@ -169,7 +173,8 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
 
   if (!(await user.matchPassword(req.body.currentPassword))) {
-    return next(new ErrorResponse("Password is incorrect", 401));
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
 
   user.password = req.body.newPassword;
@@ -232,7 +237,8 @@ exports.sendOtp = asyncHandler(async (req, res, next) => {
 
     //if user not found sending the 404 response
     if (!user) {
-      return next(new ErrorResponse("there is no user with this email", 404));
+      return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
     }
 
     //searching whether the token already exists or not
@@ -271,7 +277,8 @@ exports.sendOtp = asyncHandler(async (req, res, next) => {
     res.status(200).json({ status: true, msg: "otp sent successfully" });
   } catch (error) {
     console.log(error);
-    return next(new ErrorResponse("Email could not be sent", 500));
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
 
   // const [user] = await User.find({}).or([
@@ -339,12 +346,14 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
     const user = await User.findOneAndUpdate({ email }, { password: hashedPassword }, { new: true });
     if (!user) {
-      next(new ErrorResponse("Invalid Credentials", 500));
+      res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
     };
     console.log("this is after updation", user);
     res.status(200).json({ success: true });
   } else {
-    next(new ErrorResponse("Invalid Credentials", 500));
+    res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
   // // Get hashed token
   // const resetPasswordToken = crypto
@@ -369,7 +378,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken()
-console.log(token)
+  console.log(token)
 
   //cloning and sending the user details
   const obj = JSON.stringify(user);
@@ -390,5 +399,5 @@ console.log(token)
   res
     .status(statusCode)
     .cookie('token', token, options)
-    .json({ success: true, token,userDetails })
+    .json({ success: true, token, userDetails })
 }
