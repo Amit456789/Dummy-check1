@@ -18,13 +18,13 @@ const { protect } = require('../middleware/auth');
 router
   .route('/')
   .get(advancedResults(Address), getAddresses)
-  .post(protect, createAddress)
+  .post(createAddress)
 
 router
   .route('/:id')
   .get(getAddress)
-  .put(protect, updateAddress)
-  .delete(protect, deleteAddress)
+  .put(updateAddress)
+  .delete(deleteAddress)
 
 
 

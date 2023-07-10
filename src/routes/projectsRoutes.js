@@ -8,8 +8,8 @@ const { protect } = require('../middleware/auth');
 
 const advancedResults = require('../middleware/advancedResults')
 
-router.route("/").get(advancedResults(Project), getProject).post(upload.array("images"), protect, uploadProjects)
-router.delete("/:id", protect, deleteProject).put("/:id", upload.array("images"), updateProjectMegha)
+router.route("/").get(advancedResults(Project), getProject).post(upload.array("images"), uploadProjects)
+router.delete("/:id", deleteProject).put("/:id", upload.array("images"), updateProjectMegha)
 // router.put(':/id',upload.array("images"), protect, updateProject)
 
 module.exports = router

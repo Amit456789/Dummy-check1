@@ -17,19 +17,19 @@ const {
 
 const { protect } = require('../middleware/auth');
 
-router.get("/",protect,getUsers)
+router.get("/", getUsers)
 
-router.get("/find?",protect,getUsersByName)
+router.get("/find?", getUsersByName)
 
 router.post('/register', register)
 router.post('/login', login)
 router.post('/logout', logout)
 router.post('/me', getMe)
-router.put('/updatedetails', protect, updateDetails)
-router.put('/updatepassword', protect, updatePassword)
+router.put('/updatedetails', updateDetails)
+router.put('/updatepassword', updatePassword)
 //changed forgotpassword route to sendotp and the controller name to sendotp
 router.post('/sendotp', sendOtp);
-router.post("/verifyotp",verifyOtp);
+router.post("/verifyotp", verifyOtp);
 // router.post('/forgotpassword', forgotPassword)
 // router.put('/resetpassword/:resettoken', resetPassword)
 router.patch('/resetpassword', resetPassword)
