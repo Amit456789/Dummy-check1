@@ -15,6 +15,7 @@ const fileURLToPath = url.fileURLToPath;
 const projectRoutes = require("./src/routes/projectsRoutes.js")
 const ContactRoute = require("./src/routes/contactRoutes.js")
 const CareerRoute = require("./src/routes/CareerRoute.js")
+const GetInTouchRoute = require("./src/routes/GetInTouch.js")
 const employeeRoutes = require("./src/routes/employe.js")
 // const helpDeskRoutes = require("./src/routes/helpdesk.js")
 const teamRoutes = require("./src/routes/teams.js")
@@ -71,7 +72,8 @@ app.use(versionOne("contact"), ContactRoute)
 app.use(versionOne("career"), CareerRoute)
 app.use(versionOne("auth"), AuthenticationRoute)
 app.use(versionOne("blog"), BlogRoute)
-
+app.use(versionOne("touch"), GetInTouchRoute);
+// app.use("/api/v1", );
 
 
 
