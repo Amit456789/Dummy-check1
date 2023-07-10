@@ -64,6 +64,69 @@ const getProject = async (req, res) => {
     }
 }
 
+// @desc    Update address
+// @route   PUT /api/v1/address/:id
+const updateProjectMegha = async (req, res) => {
+
+    if (!req?.body?.location) {
+        return res.status(400).json({ status: "FAILURE", msg: "Location field is required" })
+    }
+    const Location = JSON.parse(req?.body?.location)
+    const payload = {
+        buildUpArea: req?.body?.buildUpArea,
+
+        client: req?.body?.client, status: req?.body?.status, location: {
+            city: Location.city, state: Location?.state, country: Location?.country
+        }, type: [req?.body?.type],
+        concept: req?.body?.concept, description: req?.body?.description
+    }
+    const address = await project.findByIdAndUpdate(req.params.id, { ...payload, propertyGallery: req?.file?.path }, {
+        runValidators: true,
+        new: true
+    })
+
+    if (!address) {
+        return next(new ErrorResponse(`No project with id of ${req.params.id}`))
+    }
+
+    res.status(200).json({ success: true, data: address })
+}
+
+// const updateProject = async (req, res) => {
+//     console.log(req.body, "jgujh");
+//     console.log(req.params.id);
+//     try {
+//         const { files } = req
+//         const propertyGallery = []
+//         const pictures = files.forEach((file) => {
+//             propertyGallery.push(file?.path)
+//         })
+
+//         const Location = JSON.parse(req?.body?.location)
+//         const payload = {
+//             buildUpArea: req?.body?.buildUpArea,
+
+//             client: req?.body?.client, status: req?.body?.status, location: {
+//                 city: Location.city, state: Location?.state, country: Location?.country
+//             }, type: [req?.body?.type],
+//             concept: req?.body?.concept, description: req?.body?.description
+//         }
+//         console.log(payload)
+
+//         project.findByIdAndUpdate(req.params.id, { ...payload }).then((data) => {
+//             console.log(data)
+//             res.status(200).json({ status: "success ", data })
+//         }).catch((err) => {
+//             console.log(err.message)
+//         })
+
+//     }
+//     catch (err) {
+//         res.status(400).json({ status: "Failure", error: `${err?.message?.split(":")[2]}` || `Internal server error-${err.message}` })
+
+//     }
+// }
+
 // @desc    delete projects
 // @route   GET /api/v1/deleteProject
 const deleteProject = async (req, res) => {
@@ -82,5 +145,5 @@ const deleteProject = async (req, res) => {
 
 }
 
-module.exports = { uploadProjects, getProject, deleteProject }
+module.exports = { uploadProjects, getProject, deleteProject, updateProjectMegha }
 

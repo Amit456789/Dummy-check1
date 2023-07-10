@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/async')
-const ErrorResponse = require('../utils/errorResponse')
+
 const Question = require('../models/HeadquarterAddress')
 
 // @desc    Get address
@@ -17,7 +17,8 @@ exports.getAddress = asyncHandler(async (req, res, next) => {
 
   if (!address) {
     return next(
-      new ErrorResponse(`No address with that id of ${req.params.id}`)
+      new res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
     )
   }
 
@@ -52,7 +53,8 @@ exports.updateAddress = asyncHandler(async (req, res, next) => {
   })
 
   if (!address) {
-    return next(new ErrorResponse(`No address with id of ${req.params.id}`))
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
 
   res.status(200).json({ success: true, data: address })
@@ -64,7 +66,8 @@ exports.deleteAddress = asyncHandler(async (req, res, next) => {
   const address = await Question.findByIdAndDelete(req.params.id)
 
   if (!address) {
-    return next(new ErrorResponse(`No address with id of ${req.params.id}`))
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
 
   res.status(200).json({ success: true, data: address })

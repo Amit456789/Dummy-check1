@@ -1,10 +1,15 @@
 const express = require("express")
 const router = express.Router()
-const { uploadProjects, getProject, deleteProject } = require("../controllers/projectController")
+const { uploadProjects, getProject, deleteProject, updateProjectMegha } = require("../controllers/projectController")
 const { upload } = require("../utils/multerMultiple")
+const Project = require('../models/projectsModel');
 
 
-router.route("/").get(getProject).post(upload.array("images"), uploadProjects)
-router.delete("/:id", deleteProject)
+
+const advancedResults = require('../middleware/advancedResults')
+
+router.route("/").get(advancedResults(Project), getProject).post(upload.array("images"), uploadProjects)
+router.delete("/:id", deleteProject).put("/:id", upload.array("images"), updateProjectMegha)
+// router.put(':/id',upload.array("images"), protect, updateProject)
 
 module.exports = router
