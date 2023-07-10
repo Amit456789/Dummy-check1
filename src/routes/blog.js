@@ -4,7 +4,6 @@ const { uploadBlogs, getBlogs, deleteBlogs, updateBlogs } = require("../controll
 const { upload } = require("../utils/multerMultiple")
 const blog = require('../models/blog');
 
-const { protect } = require('../middleware/auth');
 
 const advancedResults = require('../middleware/advancedResults')
 

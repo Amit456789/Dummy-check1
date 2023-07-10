@@ -4,7 +4,7 @@ const { uploadProjects, getProject, deleteProject, updateProjectMegha } = requir
 const { upload } = require("../utils/multerMultiple")
 const Project = require('../models/projectsModel');
 
-const { protect } = require('../middleware/auth');
+
 
 const advancedResults = require('../middleware/advancedResults')
 

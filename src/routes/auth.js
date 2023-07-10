@@ -15,8 +15,6 @@ const {
   getUsersByName
 } = require('../controllers/auth');
 
-const { protect } = require('../middleware/auth');
-
 router.get("/", getUsers)
 
 router.get("/find?", getUsersByName)
