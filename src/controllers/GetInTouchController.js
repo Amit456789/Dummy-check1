@@ -4,21 +4,19 @@ const { GetInTouchModel } = require("../models/GetInTouchModel");
 // @localhosst:4000/api/v1/touch
 //Schema is in Model==>Get in Touch
 exports.CreateGetInTouch = async (req, res) => {
+  console.log("hello")
   const datum = req.body;
-  console.log("After the validation",datum)
+
   let result = getInTouchValidation(datum);
   if (result.error) {
-    console.log(
-      result.error.details[0].message,
-      "Error++++++++++++++++++++++++"
-    );
+
     return res.status(400).json({
       success: false,
       Error: result.error.details[0].message,
     });
   }
   try {
-    const { name, email, contact, bhk, budget, area, location,category,subCategory } = req.body;
+    const { name, email, contact, bhk, budget, area, location, category, subCategory } = req.body;
     let obj = {
       Heading: `A New Project Detail Request`,
       name,
@@ -35,7 +33,7 @@ exports.CreateGetInTouch = async (req, res) => {
       "a0423355@gmail.com",
       "New Project Request",
       "Welcome message content",
-      obj, 
+      obj,
     );
     let payload = new GetInTouchModel(req.body);
 

@@ -13,6 +13,7 @@ const fileURLToPath = url.fileURLToPath;
 // importing routes
 const projectRoutes = require("./src/routes/projectsRoutes.js")
 const ContactRoute = require("./src/routes/contactRoutes.js")
+const GetInTouchRoute = require("./src/routes/GetInTouch.js")
 const CareerRoute = require("./src/routes/CareerRoute.js")
 const employeeRoutes = require("./src/routes/employe.js")
 const helpDeskRoutes = require("./src/routes/helpdesk.js")
@@ -61,6 +62,7 @@ app.use(versionOne("projects"), projectRoutes)
 app.use(versionOne("employe"), employeeRoutes)
 app.use(versionOne("employe"), employeeRoutes)
 app.use(versionOne("team"), teamRoutes)
+app.use(versionOne("touch"), GetInTouchRoute);
 app.use(versionOne("helpdesk"), helpDeskRoutes)
 app.use(versionOne("headqaurter"), headquarteraddress)
 app.use(versionOne("contact"), ContactRoute)
