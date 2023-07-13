@@ -136,40 +136,41 @@ exports.updateEmployee = asyncHandler(async (req, res, next) => {
 // @desc    Delete employees
 // @route   DELETE /api/v1/employees/:id
 exports.deleteEmployee = asyncHandler(async (req, res, next) => {
-  // const category = await Category.findByIdAndDelete(req.params.id)
+  const existingCategory = await Category.findById(req?.params?.id)
+  if (!existingCategory) {
+
+    return res.status(500).json({ status: "FAILURE", msg: `No Employee with id of ${req.params.id}` })
+  }
+
+
+
   const category = await Category.findOneAndDelete(
-    { _id: req.params.id },
-    function (err, data) {
-      // console.log(data)
-      if (err) {
-        return next(
-          new ErrorResponse(`No Employee with id of ${req.params.id}`)
-        )
-      }
+    { _id: req.params.id })
 
-      if (!data) {
-        return next(
-          new ErrorResponse(`No Employee with id of ${req.params.id}`)
-        )
-      }
 
-      if (data && data.photo !== 'no-photo.jpg') {
-        fs.unlink(`${process.env.FILE_UPLOAD_PATH}/${data.photo}`, (err) => {
-          if (err) {
-            return next(
-              new ErrorResponse(
-                `Something went wrong, couldn't delete category photo`,
-                500
-              )
-            )
-          }
-          return res.status(200).json({ success: true, data })
-        })
-      } else {
-        res.status(200).json({ success: true, data })
-      }
-    }
-  )
+
+
+
+
+  if (existingCategory && existingCategory.photo !== 'no-photo.jpg') {
+
+    // fs.unlink(`${process.env.FILE_UPLOAD_PATH}/${existingCategory.photo}`, (err) => {
+    //   if (err) {
+    //     // return next(
+    //     //   new ErrorResponse(
+    //     //     `Something went wrong, couldn't delete category photo`,
+    //     //     500
+    //     //   )
+    //     // )
+    //     return res.status(500).json({ status: "FAILURE", msg: "Something went wrong, couldn't delete category photo" })
+    //   }
+    //   return res.status(200).json({ success: true, existingCategory })
+    // })
+  } else {
+    res.status(200).json({ success: true, existingCategory })
+  }
+
+
 })
 
 // // @desc    Upload photo for category
@@ -193,8 +194,7 @@ exports.deleteEmployee = asyncHandler(async (req, res, next) => {
 //     return next(new ErrorResponse(`Please upload an image photo`, 404))
 //   }
 
-//   if (photo.size > process.env.MAX_FILE_UPLOAD) {
-//     return next(
+//   if (photo.size > process.env.MAX_FILE_UPLO
 //       new ErrorResponse(
 //         `Please upload an image less than ${
 //           process.env.MAX_FILE_UPLOAD / 1000 / 1000

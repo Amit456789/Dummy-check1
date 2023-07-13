@@ -11,10 +11,7 @@ exports.CareerCreate = async (req, res) => {
   console.log("Protocol inside career", protocol);
   let result = careerValidation(datum);
   if (result.error) {
-    console.log(
-      result.error.details[0].message,
-      "Error++++++++++++++++++++++++"
-    );
+
     return res.status(400).json({
       success: false,
       Error: result.error.details[0].message,
@@ -50,7 +47,6 @@ exports.CareerCreate = async (req, res) => {
       cv,
       way,
     };
-    console.log("This is to check path in career", __dirname);
     //This route is to send the mail to a user
     sendEmail(
       "a0423355@gmail.com",
