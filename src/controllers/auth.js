@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("../middleware/async");
+const ErrorResponse = require("../utils/errorResponse");
 
 const sendEmail = require("../utils/sendEmail");
 const otpGenerator = require("../utils/otpGenerator");

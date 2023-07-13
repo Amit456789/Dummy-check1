@@ -1,5 +1,6 @@
 const { json } = require("body-parser")
-const project = require("../models/projectsModel")
+const project = require("../models/projectsModel");
+const errorResponse = require('../utils/errorResponse');
 const { cloudinary } = require("../utils/multerMultiple")
 
 

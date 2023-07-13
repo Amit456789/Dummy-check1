@@ -6,19 +6,22 @@ const {
   updateEmployee,
   deleteEmployee
 } = require('../controllers/employeesController')
-const { protect } = require("../middleware/auth")
+
+const { upload } = require("../utils/multerMultiple")
 
 const Employee = require('../models/emplyee')
 const router = express.Router()
 
 
 const advancedResults = require('../middleware/advancedResults')
+const { protect } = require('../middleware/auth')
 
 
 router
   .route('/')
   .get(protect, advancedResults(Employee), getEmployees)
-  .post(protect, createEmployee)
+  .post(protect, upload.array("images"), createEmployee)
+
 
 router
   .route('/:id')
