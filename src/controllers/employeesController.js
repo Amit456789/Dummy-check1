@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs')
 const asyncHandler = require('../middleware/async')
-const { ErrorResponse } = require('../utils/errorResponse')
 const Category = require('../models/emplyee')
 
 
@@ -18,7 +17,8 @@ exports.getEmployee = asyncHandler(async (req, res, next) => {
 
   if (!category) {
     return next(
-      new ErrorResponse(`No category with that id of ${req?.params.id}`)
+      new res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
     )
   }
 
@@ -31,7 +31,8 @@ exports.createEmployee = asyncHandler(async (req, res, next) => {
   let category = await Category.findOne({ EmployeeId: req.body.EmployeeId })
 
   if (category) {
-    return next(new ErrorResponse('Employee already exists', 400))
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
 
   if (!req.files || !req.files.photo) {
@@ -91,7 +92,8 @@ exports.updateEmployee = asyncHandler(async (req, res, next) => {
   })
 
   if (!address) {
-    return next(new ErrorResponse(`No employee with id of ${req.params.id}`))
+    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+
   }
 
   res.status(200).json({ success: true, data: address })
@@ -145,32 +147,32 @@ exports.deleteEmployee = asyncHandler(async (req, res, next) => {
 
 
   const category = await Category.findOneAndDelete(
-    { _id: req.params.id })
+    { _id: req.params.id },
+    function (err, data) {
+      // console.log(data)
+      if (err) {
+        returnres.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
 
+      }
 
+      if (!data) {
+        returnres.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
 
+      }
 
+      if (data && data.photo !== 'no-photo.jpg') {
+        fs.unlink(`${process.env.FILE_UPLOAD_PATH}/${data.photo}`, (err) => {
+          if (err) {
+            return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
 
-
-  if (existingCategory && existingCategory.photo !== 'no-photo.jpg') {
-
-    // fs.unlink(`${process.env.FILE_UPLOAD_PATH}/${existingCategory.photo}`, (err) => {
-    //   if (err) {
-    //     // return next(
-    //     //   new ErrorResponse(
-    //     //     `Something went wrong, couldn't delete category photo`,
-    //     //     500
-    //     //   )
-    //     // )
-    //     return res.status(500).json({ status: "FAILURE", msg: "Something went wrong, couldn't delete category photo" })
-    //   }
-    //   return res.status(200).json({ success: true, existingCategory })
-    // })
-  } else {
-    res.status(200).json({ success: true, existingCategory })
-  }
-
-
+          }
+          return res.status(200).json({ success: true, data })
+        })
+      } else {
+        res.status(200).json({ success: true, data })
+      }
+    }
+  )
 })
 
 // // @desc    Upload photo for category

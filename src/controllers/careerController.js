@@ -8,7 +8,7 @@ const careerValidation =
 exports.CareerCreate = async (req, res) => {
   const datum = JSON.parse(req.body.document);
   const protocol = req.protocol;
-  console.log("Protocol inside career", protocol);
+  // console.log("Protocol inside career", protocol);
   let result = careerValidation(datum);
   if (result.error) {
 
@@ -18,19 +18,21 @@ exports.CareerCreate = async (req, res) => {
     });
   }
   // console.log(req?.file, "Filessssss");
-  if (req?.file) {
-    datum.cv = `${`https://klimart-backend.onrender.com`}/public/${req?.file?.filename
-      }`;
-  } else {
-    return res.status(400).json({
-      success: false,
-      Error: `Please upload a pdf`,
-    });
-  }
 
   // datum.cv = `${process.env.URL}/public/${req?.file?.filename.trim()}`;
 
   try {
+    if (req?.file) {
+      datum.cv = `${`https://klimart-backend.onrender.com`}/public/${
+        req?.file?.filename
+      }`;
+    } else {
+      return res.status(400).json({
+        success: false,
+        Error: `Please upload a pdf`,
+      });
+    }
+
     let payload = await CareerModel.create(datum);
     const { fname, lname, contact, city, experience, email, education, cv } =
       datum;

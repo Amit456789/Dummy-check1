@@ -14,6 +14,7 @@ const router = express.Router()
 const advancedResults = require('../middleware/advancedResults')
 
 
+
 router
   .route('/')
   .get(advancedResults(Address), getAddresses)
