@@ -6,23 +6,25 @@ const {
   updateEmployee,
   deleteEmployee
 } = require('../controllers/employeesController')
+const { protect } = require("../middleware/auth")
 
 const Employee = require('../models/emplyee')
 const router = express.Router()
+
 
 const advancedResults = require('../middleware/advancedResults')
 
 
 router
   .route('/')
-  .get(advancedResults(Employee), getEmployees)
-  .post(createEmployee)
+  .get(protect, advancedResults(Employee), getEmployees)
+  .post(protect, createEmployee)
 
 router
   .route('/:id')
-  .get(getEmployee)
-  .put(updateEmployee)
-  .delete(deleteEmployee)
+  .get(protect, getEmployee)
+  .put(protect, updateEmployee)
+  .delete(protect, deleteEmployee)
 
 
 

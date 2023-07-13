@@ -1,6 +1,6 @@
 const { json } = require("body-parser")
 const project = require("../models/blog")
-const { cloudinary } = require("../utils/multerMultiple")
+
 
 
 
@@ -11,11 +11,13 @@ const { cloudinary } = require("../utils/multerMultiple")
 const uploadBlogs = async (req, res) => {
     try {
 
+
         const { files } = req
         const propertyGallery = []
         const pictures = files.forEach((file) => {
             propertyGallery.push(file?.path)
         })
+
 
 
 
@@ -63,28 +65,32 @@ const getBlogs = async (req, res) => {
 // @desc    Update address
 // @route   PUT /api/v1/updateBlogs/:id
 const updateBlogs = async (req, res) => {
-    const address = await project.findByIdAndUpdate(req.params.id, req.body, {
+
+    const existingBlog = await project.findById(req?.params?.id)
+    if (!existingBlog) {
+        return res.status(400).json({
+            status: "FAILURE", msg: "No blog data foud with given id!!"
+        })
+    }
+    const blogs = await project.findByIdAndUpdate(req.params.id, req.body, {
         runValidators: true,
         new: true
     })
 
-    if (!address) {
+    if (!existingBlog) {
         return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
 
     }
 
-    res.status(200).json({ success: true, data: address })
+    res.status(200).json({ success: true, data: "Blog updated successfully!!" })
 }
 
 
 const updateProject = async (req, res) => {
-    console.log(req.body, "jgujh");
-    console.log(req.params.id);
     try {
         const { files } = req
         const propertyGallery = []
         const pictures = files.forEach((file) => {
-            propertyGallery.push(file?.path)
         })
 
         const Location = JSON.parse(req?.body?.location)
@@ -96,13 +102,13 @@ const updateProject = async (req, res) => {
             }, type: [req?.body?.type],
             concept: req?.body?.concept, description: req?.body?.description
         }
-        console.log(payload)
+
 
         project.findByIdAndUpdate(req.params.id, { ...payload }).then((data) => {
-            console.log(data)
+
             res.status(200).json({ status: "success ", data })
         }).catch((err) => {
-            console.log(err.message)
+            res.status(400).json({ status: "FAILURE", msg: `${err.message}` })
         })
 
     }

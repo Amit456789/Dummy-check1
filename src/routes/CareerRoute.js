@@ -9,9 +9,11 @@ const multerUploadUtils = require("../utils/multerUpload.js");
 
 const CareerCreate = careerController.CareerCreate;
 const validateMimeType = multerUploadUtils.validateMimeType;
-console.log("INSDIDE CAREER")
+const { protect } = require("../middleware/auth.js")
+
+
 // Post route to post a new data from user including cv
-router.post("/", validateMimeType, CareerCreate);
-router.get("/", careerController.CareerDetails);
+router.post("/", protect, validateMimeType, CareerCreate);
+router.get("/", protect, careerController.CareerDetails);
 
 module.exports = router
