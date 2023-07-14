@@ -27,7 +27,7 @@ const uploadProjects = async (req, res) => {
             client: req?.body?.client, status: req?.body?.status, location: {
                 city: Location.city, state: Location?.state, country: Location?.country
             }, type: [req?.body?.type],
-            concept: req?.body?.concept, description: req?.body?.description
+            concept: req?.body?.concept, description: req?.body?.description, name: req?.body?.name, sustainableAccreditation: req?.body?.sustainableAccreditation
         }
 
         const uploadProjects = new project({ ...payload, propertyGallery })
