@@ -24,6 +24,7 @@ const headquarteraddress = require("./src/routes/headquarter.js")
 const HeadquarterAddress = require("./src/models/HeadquarterAddress.js");
 const AuthenticationRoute = require("./src/routes/auth.js");
 const BlogRoute = require("./src/routes/blog.js");
+const errorResponse = require('./src/utils/errorResponse.js');
 
 
 
