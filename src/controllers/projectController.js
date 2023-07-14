@@ -1,6 +1,6 @@
 const { json } = require("body-parser")
 const project = require("../models/projectsModel");
-const errorResponse = require('../utils/errorResponse');
+
 const { cloudinary } = require("../utils/multerMultiple")
 
 
@@ -18,7 +18,7 @@ const uploadProjects = async (req, res) => {
             propertyGallery.push(file?.path)
         })
 
-
+        console.log(req.body)
 
         const Location = JSON.parse(req?.body?.location)
 
