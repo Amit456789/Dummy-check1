@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/async')
-const ErrorResponse = require('../utils/errorResponse')
+
 const Assignment = require('../models/HelpDesk')
 // const Category = require('../models/Category')
 
@@ -15,9 +15,7 @@ exports.getHelp = asyncHandler(async (req, res, next) => {
   const Help = await Assignment.findById(req.params.id)
 
   if (!Help) {
-    return next(
-      new ErrorResponse(`No Help with that id of ${req.params.id}`)
-    )
+    return res.status(400).json({ status: "FAILURE", msg: `No Help with that id of ${req.params.id}` })
   }
 
   res.status(200).json({ success: true, data: Help })
@@ -44,7 +42,7 @@ exports.updateHelp = asyncHandler(async (req, res, next) => {
   })
 
   if (!assignment) {
-    return next(new ErrorResponse(`No Help with id of ${req.params.id}`))
+    return res.status(400).json({ status: "FAILURE", msg: `No Help with that id of ${req.params.id}` })
   }
 
   res.status(200).json({ success: true, data: assignment })
@@ -56,7 +54,7 @@ exports.deleteHelp = asyncHandler(async (req, res, next) => {
   const assignment = await Assignment.findByIdAndDelete(req.params.id)
 
   if (!assignment) {
-    return next(new ErrorResponse(`No Help with id of ${req.params.id}`))
+    return res.status(400).json({ status: "FAILURE", msg: `No Help with that id of ${req.params.id}` })
   }
 
   res.status(200).json({ success: true, data: assignment })

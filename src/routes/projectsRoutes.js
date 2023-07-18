@@ -14,4 +14,5 @@ router.route("/").get(protect, getProject).post(protect, upload.array("images"),
 router.route("/:id").delete(protect, deleteProject).put(protect, upload.array("images"), updateProjectMegha).get(protect, getSingleProject)
 // router.put(':/id',upload.array("images"), protect, updateProject)
 
+
 module.exports = router

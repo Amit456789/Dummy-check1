@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("../middleware/async");
-const ErrorResponse = require("../utils/errorResponse");
+
 
 const sendEmail = require("../utils/sendEmail");
 const otpGenerator = require("../utils/otpGenerator");
@@ -10,16 +10,6 @@ const otpGenerator = require("../utils/otpGenerator");
 const User = require("../models/User");
 const otpModel = require("../models/OtpModel");
 
-//@desc   Get Users
-//@route  GET /api/v1/auth/getusers
-//@access PUBLIC
-// exports.getUsers =asyncHandler(async(req,res,next)=>{
-//   const user = await User.find().select("-password");
-//   if(!user){
-//     next(new ErrorResponse("Nothing Found",404));
-//   }
-//   res.status(200).json({success:true,user});
-// })
 
 //getUser by search query
 exports.getUsersByName = async (req, res) => {
@@ -99,9 +89,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const { auth, password } = req.body;
 
   if (!auth || !password) {
-    return next(
-      new ErrorResponse("Please provide an email/username and password", 400)
-    );
+    return res.status(400).json({ status: "FAILURE", msg: `Please provide an email/username and password` })
   }
 
   const [user] = await User.find({})
@@ -109,7 +97,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     .select("+password");
 
   if (!user) {
-    return next(new ErrorResponse("Invalid credentials", 400));
+    return res.status(400).json({ status: "FAILURE", msg: `Invalid credentials` });
   }
 
   const isMatch = await user.matchPassword(password);
@@ -143,15 +131,15 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/auth/updatedetails
 // @access  Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-  console.log("update details");
+  console.log("update details", req.body);
   const fields = {
-    username: req.body.username,
-    email: req.body.email,
+    username: req?.body?.username,
+    email: req?.body?.email,
   };
   let user = await User.findOne({ email: fields.email });
 
   if (user && user.email !== req.user.email)
-    return next(new ErrorResponse("Email already exists", 401));
+    return res.status(400).json({ status: "FAILURE", msg: `Email already exists` });
 
   user = await User.findOne({ username: fields.username });
   if (user && user.username !== req.user.username)
@@ -330,7 +318,7 @@ exports.verifyOtp = asyncHandler(async (req, res, next) => {
   //searching for the sent otp in the database
   const doc = await otpModel.findOne({ otp });
   if (!doc) {
-    next(new ErrorResponse("Invalid Credentials", 404));
+    res.status(400).json({ status: "FAILURE", msg: `Email already exists` })
   }
   console.log("this user is verified");
   res.status(200).json({ success: true });

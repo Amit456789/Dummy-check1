@@ -69,28 +69,35 @@ const getProject = async (req, res) => {
 // @route   PUT /api/v1/projects/:id
 const updateProjectMegha = async (req, res) => {
 
-    if (!req?.body?.location) {
-        return res.status(400).json({ status: "FAILURE", msg: "Location field is required" })
-    }
-    const Location = JSON.parse(req?.body?.location)
-    const payload = {
-        buildUpArea: req?.body?.buildUpArea,
+    try {
+        if (!req?.body?.location) {
+            return res.status(400).json({ status: "FAILURE", msg: "Location field is required" })
+        }
+        const Location = JSON.parse(req?.body?.location)
+        const payload = {
+            buildUpArea: req?.body?.buildUpArea,
 
-        client: req?.body?.client, status: req?.body?.status, location: {
-            city: Location.city, state: Location?.state, country: Location?.country
-        }, type: [req?.body?.type],
-        concept: req?.body?.concept, description: req?.body?.description
-    }
-    const address = await project.findByIdAndUpdate(req.params.id, { ...payload, propertyGallery: req?.file?.path }, {
-        runValidators: true,
-        new: true
-    })
+            client: req?.body?.client, status: req?.body?.status, location: {
+                city: Location.city, state: Location?.state, country: Location?.country
+            }, type: [req?.body?.type],
+            concept: req?.body?.concept, description: req?.body?.description
+        }
+        const updatedProject = await project.findByIdAndUpdate(req.params.id, { ...payload, propertyGallery: req?.file?.path }, {
+            runValidators: true,
+            new: true
+        })
 
-    if (!address) {
-        return next(new ErrorResponse(`No project with id of ${req.params.id}`))
+        if (!updatedProject) {
+            return res.status(400).json({ status: "FAILURE", msg: `No project with id of ${req.params.id}` });
+        }
+
+        res.status(200).json({ success: true, data: updatedProject })
+    }
+    catch (err) {
+        res.send(err.message)
     }
 
-    res.status(200).json({ success: true, data: address })
+
 }
 
 // const updateProject = async (req, res) => {
@@ -149,7 +156,7 @@ const deleteProject = async (req, res) => {
 // @desc    get single projects
 // @route   GET /api/v1/projects/:id
 const getSingleProject = async (req, res) => {
-    console.log("hello")
+
     try {
         const singleProject = await project.findById(req?.params?.id)
         if (!singleProject) {

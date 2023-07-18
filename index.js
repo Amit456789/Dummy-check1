@@ -24,14 +24,13 @@ const headquarteraddress = require("./src/routes/headquarter.js")
 const HeadquarterAddress = require("./src/models/HeadquarterAddress.js");
 const AuthenticationRoute = require("./src/routes/auth.js");
 const BlogRoute = require("./src/routes/blog.js");
-const errorResponse = require('./src/utils/errorResponse.js');
+const errorResponse = require('./src/utils/ErrorResponse.js');
 
 
 
 
 
-// error handler
-const { errorHandler } = require("./src/middleware/errorMiddleware.js");
+
 
 // middlewares
 app.use(cookieParser()) // for parsing cookies
@@ -40,7 +39,7 @@ app.use(helmet())
 app.use(morgan("combined"))
 app.use(express.json())
 app.use("/public", express.static(path.join(__dirname, "/uploads")))
-app.use(errorHandler)
+
 app.use(
   cors({
     origin: "*",

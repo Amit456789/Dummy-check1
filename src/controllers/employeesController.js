@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const asyncHandler = require('../middleware/async')
-const errorResponse = require('../utils/errorResponse');
+const errorResponse = require('../utils/ErrorResponse');
 const emplyee = require('../models/emplyee');
 const { upload } = require("../utils/multerMultiple")
 
