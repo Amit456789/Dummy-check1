@@ -8,4 +8,4 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 dotenv.config();
-exports.connection = mongoose.connect("mongodb+srv://amit:amit@cluster0.nzlwx9h.mongodb.net/Klimart?retryWrites=true&w=majority");
+exports.connection = mongoose.connect(process.env.MONGO_DB_URL);
