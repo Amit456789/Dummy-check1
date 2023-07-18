@@ -7,6 +7,7 @@ const {
   deleteTeam,
   TeamPhotoUpload
 } = require('../controllers/teams')
+const { protect } = require("../middleware/auth")
 
 const Teams = require("../models/TeamMember")
 
@@ -16,14 +17,14 @@ const advancedResults = require('../middleware/advancedResults')
 
 router
   .route('/')
-  .get(advancedResults(Teams), getTeams)
-  .post(createTeam)
+  .get(protect, advancedResults(Teams), getTeams)
+  .post(protect, createTeam)
 
 router
   .route('/:id')
-  .get(getTeam)
-  .put(updateTeam)
-  .delete(deleteTeam)
+  .get(protect, getTeam)
+  .put(protect, updateTeam)
+  .delete(protect, deleteTeam)
 
 router.route('/:id/photo').put(TeamPhotoUpload)
 

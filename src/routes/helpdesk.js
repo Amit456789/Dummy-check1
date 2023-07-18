@@ -7,6 +7,7 @@ const {
   updateHelp,
   deleteHelp
 } = require('../controllers/helpdesk')
+const { protect } = require("../middleware/auth")
 
 const Assignment = require('../models/HelpDesk')
 
@@ -17,13 +18,13 @@ const advancedResults = require('../middleware/advancedResults')
 
 router
   .route('/')
-  .get(advancedResults(Assignment), getHelps)
-  .post(createHelp)
+  .get(protect, advancedResults(Assignment), getHelps)
+  .post(protect, createHelp)
 
 router
   .route('/:id')
-  .get(getHelp)
-  .put(updateHelp)
-  .delete(deleteHelp)
+  .get(protect, getHelp)
+  .put(protect, updateHelp)
+  .delete(protect, deleteHelp)
 
 module.exports = router

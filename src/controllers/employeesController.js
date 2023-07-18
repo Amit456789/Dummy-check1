@@ -1,8 +1,9 @@
 const path = require('path')
 const fs = require('fs')
 const asyncHandler = require('../middleware/async')
-const Category = require('../models/emplyee')
-
+const errorResponse = require('../utils/ErrorResponse');
+const emplyee = require('../models/emplyee');
+const { upload } = require("../utils/multerMultiple")
 
 // @desc    Get employees
 // @route   GET /api/v1/employees
@@ -13,7 +14,7 @@ exports.getEmployees = asyncHandler(async (req, res, next) => {
 // @desc    Get single employees
 // @route   GET /api/v1/employees/:id
 exports.getEmployee = asyncHandler(async (req, res, next) => {
-  const category = await Category.findById(req?.params.id)
+  const category = await emplyee.findById(req?.params.id)
 
   if (!category) {
     return next(
@@ -27,66 +28,41 @@ exports.getEmployee = asyncHandler(async (req, res, next) => {
 
 // @desc    Create employees
 // @route   POST /api/v1/employees/
-exports.createEmployee = asyncHandler(async (req, res, next) => {
-  let category = await Category.findOne({ EmployeeId: req.body.EmployeeId })
+exports.createEmployee = async (req, res) => {
+  try {
 
-  if (category) {
-    return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
-
-  }
-
-  if (!req.files || !req.files.photo) {
-    // return next(new ErrorResponse(`Please upload a photo`, 404))
-    category = await Category.create({
-      ...req.body
+    console.log(req.files, "files")
+    const { files } = req
+    const propertyGallery = []
+    const pictures = files.forEach((file) => {
+      propertyGallery.push(file?.path)
     })
-
-    return res.status(200).json({ success: true, data: category })
-  }
-
-  const photo = req.files.photo
-
-  if (!photo.mimetype.startsWith('image')) {
-    return next(new ErrorResponse(`Please upload an image photo`, 404))
-  }
-
-  if (photo.size > process.env.MAX_FILE_UPLOAD) {
-    return next(
-      new ErrorResponse(
-        `Please upload an image less than ${process.env.MAX_FILE_UPLOAD / 1000 / 1000
-        }mb`,
-        404
-      )
-    )
-  }
-
-  category = await Category.create({
-    ...req.body
-  })
-
-  photo.name = `photo-${category._id}${path.parse(photo.name).ext}`
-
-  photo.mv(`${process.env.FILE_UPLOAD_PATH}/${photo.name}`, async (err) => {
-    if (err) {
-      console.error(err)
-      await Category.findByIdAndDelete(category._id)
-      return next(new ErrorResponse(`Problem with photo upload`, 500))
+    const payload = {
+      Name: req?.body?.Name,
+      EmployeeId: req?.body?.EmployeeId, Address: req?.body?.Address
     }
+    console.log(propertyGallery);
+    console.log(payload);
 
-    category = await Category.findByIdAndUpdate(
-      category._id,
-      { photo: photo.name },
-      { new: true }
-    )
+    const uploadProjects = new emplyee({ ...payload, propertyGallery })
+    const savedUploadProjects = await uploadProjects.save()
+    console.log(savedUploadProjects)
+    res.status(200).json({ status: "SUCCESS", data: savedUploadProjects })
+  }
+  catch (err) {
+    res.status(400).json({ status: "Failure", error: `${err?.message?.split(":")[2]}` || `Internal server error-${err.message}` })
 
-    return res.status(200).json({ success: true, data: category })
-  })
-})
+
+
+  }
+}
+
+
 
 // @desc    Update employees
 // @route   PUT /api/v1/employees/:id
 exports.updateEmployee = asyncHandler(async (req, res, next) => {
-  const address = await Category.findByIdAndUpdate(req.params.id, req.body, {
+  const address = await emplyee.findByIdAndUpdate(req.params.id, req.body, {
     runValidators: true,
     new: true
   })
@@ -138,34 +114,14 @@ exports.updateEmployee = asyncHandler(async (req, res, next) => {
 // @desc    Delete employees
 // @route   DELETE /api/v1/employees/:id
 exports.deleteEmployee = asyncHandler(async (req, res, next) => {
-  // const category = await Category.findByIdAndDelete(req.params.id)
-  const category = await Category.findOneAndDelete(
-    { _id: req.params.id },
-    function (err, data) {
-      // console.log(data)
-      if (err) {
-        returnres.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+  const employee = await emplyee.findByIdAndDelete(req.params.id)
 
-      }
+  if (!employee) {
+    return res.status(400).json({ status: "FAILURE", msg: "No Employee data!!" })
 
-      if (!data) {
-        returnres.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
+  }
 
-      }
-
-      if (data && data.photo !== 'no-photo.jpg') {
-        fs.unlink(`${process.env.FILE_UPLOAD_PATH}/${data.photo}`, (err) => {
-          if (err) {
-            return res.status(400).json({ status: "FAILURE", msg: "Internal server error !!" })
-
-          }
-          return res.status(200).json({ success: true, data })
-        })
-      } else {
-        res.status(200).json({ success: true, data })
-      }
-    }
-  )
+  res.status(200).json({ success: true, data: employee })
 })
 
 // // @desc    Upload photo for category
@@ -189,8 +145,7 @@ exports.deleteEmployee = asyncHandler(async (req, res, next) => {
 //     return next(new ErrorResponse(`Please upload an image photo`, 404))
 //   }
 
-//   if (photo.size > process.env.MAX_FILE_UPLOAD) {
-//     return next(
+//   if (photo.size > process.env.MAX_FILE_UPLO
 //       new ErrorResponse(
 //         `Please upload an image less than ${
 //           process.env.MAX_FILE_UPLOAD / 1000 / 1000

@@ -20,7 +20,7 @@ const EmployeSchema = new Schema(
       minlength: [3, 'Address must be three characters long'],
       required: [true, 'Address is required']
     },
-    photo: {
+    propertyGallery: {
       type: [String],
       required: [true, "property photos is required"]
     }

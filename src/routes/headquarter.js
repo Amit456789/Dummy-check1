@@ -6,7 +6,7 @@ const {
   updateAddress,
   deleteAddress
 } = require('../controllers/headquarteraddress')
-
+const { protect } = require("../middleware/auth")
 const Address = require('../models/HeadquarterAddress')
 
 const router = express.Router()
@@ -17,14 +17,14 @@ const advancedResults = require('../middleware/advancedResults')
 
 router
   .route('/')
-  .get(advancedResults(Address), getAddresses)
-  .post(createAddress)
+  .get(protect, advancedResults(Address), getAddresses)
+  .post(protect, createAddress)
 
 router
   .route('/:id')
-  .get(getAddress)
-  .put(updateAddress)
-  .delete(deleteAddress)
+  .get(protect, getAddress)
+  .put(protect, updateAddress)
+  .delete(protect, deleteAddress)
 
 
 

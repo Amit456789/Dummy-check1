@@ -6,7 +6,16 @@ const schema = mongoose.Schema
 const projectSchema = new schema({
     type: {
         type: [String],
-        required: [true, "type field is required"]
+        required: [true, "Type field is required"]
+    },
+    sustainableAccreditation: {
+        type: String,
+        required: [true, "Sustainable Accreditation is required"]
+    },
+
+    name: {
+        type: String,
+        required: [true, "Name field is required"]
     },
     buildUpArea: {
         type: String,
@@ -16,13 +25,13 @@ const projectSchema = new schema({
     client: {
         type: String,
         trim: true,
-        required: [true, "client field is required"]
+        required: [true, "Client field is required"]
     },
 
     status: {
         type: String,
         trim: true,
-        required: [true, "status field is required"]
+        required: [true, "Status field is required"]
     },
     location: {
         city: {
@@ -33,25 +42,27 @@ const projectSchema = new schema({
         state: {
             trim: true,
             type: String,
-            required: [true, "state field is required"]
+            required: [true, "State field is required"]
         },
         country: {
             trim: true,
             type: String,
-            required: [true, "country field is required"]
+            required: [true, "Country field is required"]
         }
     },
     propertyGallery: {
         type: [String],
-        required: [true, "property photos is required"]
+        required: [true, "Property photos is required"]
     },
     description: {
         type: String,
-        required: [true, "description field is required"]
+        required: [true, "Description field is required"]
     },
+
+
     concept: {
         type: String,
-        required: [true, "concept field is required"]
+        required: [true, "Concept field is required"]
     }
 })
 

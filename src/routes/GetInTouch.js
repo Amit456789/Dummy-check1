@@ -2,9 +2,10 @@
 const express = require("express");
 const { CreateGetInTouch } = require("../controllers/GetInTouchController");
 const router = express.Router();
+const { protect } = require("../middleware/auth")
 
-console.log("GET in TOUCH")
-router.post("/", CreateGetInTouch);
+
+router.post("/", protect, CreateGetInTouch);
 // router.get("/touch", ContactDetails);
 
 module.exports = router
